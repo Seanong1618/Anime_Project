@@ -90,16 +90,30 @@ function checkTime(i) {
                       <ul class="u-border-2 u-border-grey-80 u-custom-font u-font-lobster u-h-spacing-40 u-nav u-unstyled u-v-spacing-10 u-nav-3">
                         <li class="u-nav-item">
                           <!-- Display all the type -->
+                          <!-- Display all the type -->
                           <?php
                             require_once("Dbconnect.php");
                             $query = "SELECT type,COUNT(type) AS 'count' FROM anime GROUP BY type";
+                            $type = array();
+                            $count = array();
                             $result = mysqli_query($con,$query);
                             while ($row = mysqli_fetch_array($result)) {
-                            
+                              $type[] = $row['type'];
+                              $count[] = $row['count']; 
+                            }
                             ?>
-                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?=$row['type']?>"><?=$row['type']?> (<?=$row['count']?>)
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[1]?>"><?php echo $type[1]; ?> (<?php echo $count[1]; ?> )
                           </a>
-                        <?php } ?>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[2]?>"><?php echo $type[2]; ?> (<?php echo $count[2]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[3]?>"><?php echo $type[3]; ?> (<?php echo $count[3]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[4]?>"><?php echo $type[4]; ?> (<?php echo $count[4]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[5]?>"><?php echo $type[5]; ?> (<?php echo $count[5]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[6]?>"><?php echo $type[6]; ?> (<?php echo $count[6]; ?> )
+                          </a>
                     </li>
                   </ul>
               </div>
@@ -172,6 +186,7 @@ function checkTime(i) {
           </div>
       </div>
       <!--CHART # 1 -->
+      <div style="padding: 20px">
         <div style="width: 50%;">
           <br>
             <div style="display: flex; background-color: white;border-radius: 10px">
@@ -188,9 +203,9 @@ function checkTime(i) {
                     $anime_distribution[] = $row['anime_distribution'];
                   }
                 ?>
-                var xValues = ["<?php echo $type[0];?>","<?php echo $type[1];?>","<?php echo $type[2];?>","<?php echo $type[3];?>","<?php echo $type[4];?>","<?php echo $type[5];?>"];
-                var yValues = [<?php echo $anime_distribution[0];?>,<?php echo $anime_distribution[1];?>,<?php echo $anime_distribution[2];?>,<?php echo $anime_distribution[3];?>,<?php echo $anime_distribution[4];?>,<?php echo $anime_distribution[5];?>];
-                var barColors = ["red", "green","blue","orange","brown","black"];
+                var xValues = ["<?php echo $type[1];?>","<?php echo $type[2];?>","<?php echo $type[3];?>","<?php echo $type[4]?>","<?php echo $type[5];?>","<?php echo $type[6];?>"];
+                var yValues = [<?php echo $anime_distribution[1];?>,<?php echo $anime_distribution[2];?>,<?php echo $anime_distribution[3];?>,<?php echo $anime_distribution[4];?>,<?php echo $anime_distribution[5];?>,<?php echo $anime_distribution[6];?>];
+                var barColors = ["red", "green","blue","orange","brown","violet"];
 
                 new Chart("myChart", {
                   type: "bar",
@@ -210,10 +225,124 @@ function checkTime(i) {
                   }
                   });
             </script>
+            <canvas id="chart1" style="width:100%;max-width:600px;background-color: white;margin-left: 10px;border-radius: 10px;"></canvas>
+              <script>
+                <?php 
+                  require_once("Dbconnect.php");
+                  $query = "SELECT name, members FROM `anime` ORDER BY members DESC LIMIT 10";
+                  $name = array();
+                  $members = array();
+                  $result = mysqli_query($con,$query);
+                  while ($row = mysqli_fetch_array($result)) {
+                    $name[] = $row['name'];
+                    $members[] = $row['members'];
+                  }
+                ?>
+                var xValues = ["<?php echo $name[0];?>","<?php echo $name[1];?>","<?php echo $name[2];?>","<?php echo $name[3];?>","<?php echo $name[4];?>","<?php echo $name[5];?>","<?php echo $name[6];?>","<?php echo $name[7];?>","<?php echo $name[8];?>","<?php echo $name[9];?>"];
+                var yValues = [<?php echo $members[0];?>,<?php echo $members[1];?>,<?php echo $members[2];?>,<?php echo $members[3];?>,<?php echo $members[4];?>,<?php echo $members[5];?>,<?php echo $members[6];?>,<?php echo $members[7];?>,<?php echo $members[8];?>,<?php echo $members[9];?>];
+                var barColors = ["red", "green","blue","orange","brown","black","grey","aqua","aquamarine","violet"];
+
+                new Chart("chart1", {
+                  type: "doughnut",
+                  data: {
+                    labels: xValues,
+                    datasets: [{
+                      backgroundColor: barColors,
+                      data: yValues
+                    }]
+                  },
+                  options: {
+                    legend: {display: true},
+                    title: {
+                      display: true,
+                      text: "Top 10 Anime by the number of MEMBERS"
+                    }
+                  }
+                  });
+            </script>
+            </div>
+            <br>
+            <div style="width: 1110px;">
+              <canvas id="chart2" style="background-color: white;border-radius: 10px;"></canvas>
+            <br>
+              <script>
+                <?php 
+                  require_once("Dbconnect.php");
+                  $query = "SELECT name, rating FROM `anime` ORDER BY rating DESC LIMIT 10";
+                  $name = array();
+                  $ratings = array();
+                  $result = mysqli_query($con,$query);
+                  while ($row = mysqli_fetch_array($result)) {
+                    $name[] = $row['name'];
+                    $ratings[] = $row['rating'];
+                  }
+                ?>
+                var xValues = ["<?php echo $name[0];?>","<?php echo $name[1];?>","<?php echo $name[2];?>","<?php echo $name[3];?>","<?php echo $name[4];?>","<?php echo $name[5];?>","<?php echo $name[6];?>","<?php echo $name[7];?>","<?php echo $name[8];?>","<?php echo $name[9];?>"];
+                var yValues = [<?php echo $ratings[0];?>,<?php echo $ratings[1];?>,<?php echo $ratings[2];?>,<?php echo $ratings[3];?>,<?php echo $ratings[4];?>,<?php echo $ratings[5];?>,<?php echo $ratings[6];?>,<?php echo $ratings[7];?>,<?php echo $ratings[8];?>,<?php echo $ratings[9];?>];
+                var barColors = ["red", "green","blue","orange","brown","black","grey","aqua","aquamarine","violet"];
+
+                new Chart("chart2", {
+                  type: "bar",
+                  data: {
+                    labels: xValues,
+                    datasets: [{
+                      backgroundColor: barColors,
+                      data: yValues
+                    }]
+                  },
+                  options: {
+                    legend: {display: false},
+                    title: {
+                      display: true,
+                      text: "Top 10 Anime based on the Rating"
+                    }
+                  }
+                  });
+            </script>
+            </div>
+            <div style="display: flex;">
+             <canvas id="chart3" style="background-color: white;border-radius: 10px;"></canvas>
+            <br>
+              <script>
+                <?php 
+                  require_once("Dbconnect.php");
+                  $query = "SELECT type,AVG(rating) AS 'Average' FROM anime GROUP BY type";
+                  $type = array();
+                  $Average = array();
+                  $result = mysqli_query($con,$query);
+                  while ($row = mysqli_fetch_array($result)) {
+                    $type[] = $row['type'];
+                    $Average[] = $row['Average'];
+                  }
+                ?>
+                var xValues = ["<?php echo $type[1];?>","<?php echo $type[2];?>","<?php echo $type[3];?>","<?php echo $type[4];?>","<?php echo $type[5];?>","<?php echo $type[6];?>"];
+                var yValues = [<?php echo $Average[1];?>,<?php echo $Average[2];?>,<?php echo $Average[3];?>,<?php echo $Average[4];?>,<?php echo $Average[5];?>,<?php echo $Average[6];?>];
+                var barColors = ["red", "green","blue","orange","brown","violet"];
+
+                new Chart("chart3", {
+                  type: "pie",
+                  data: {
+                    labels: xValues,
+                    datasets: [{
+                      backgroundColor: barColors,
+                      data: yValues
+                    }]
+                  },
+                  options: {
+                    legend: {display: true},
+                    title: {
+                      display: true,
+                      text: "Top 10 Anime based on the Type"
+                    }
+                  }
+                  });
+            </script>
+             
             </div>
         </div>
       <!---->
         </div>
+      </div>
       </section>
       <!--FOOTER-->
           <section class="u-clearfix u-grey-80 u-section-4" id="sec-242b">

@@ -9,12 +9,48 @@
     <title>Popular</title>
     <link rel="stylesheet" href="nicepage.css" media="screen">
 <link rel="stylesheet" href="Home.css" media="screen">
-    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <meta name="generator" content="Nicepage 3.13.2, nicepage.com">
+
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
     <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster:400">
-    
+    <!-- FLICKTY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <link rel="stylesheet" type="text/css" href="flickity.css">
+    <!-- Data table -->
+    <!--FOR DATATABLE JQUERY-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <!-- css line header -->
+    <style type="text/css">
+      .h2 {
+         width: 80%; 
+         text-align: center; 
+         border-bottom: 1px solid red; 
+         line-height: 0.1em;
+         margin: 10px 0 20px; 
+        } 
+
+    .h2 span { 
+        background:black; 
+        padding:0 10px; 
+      }
+
+      #image{
+        height: 100px;
+        width: 100px;
+      }
+      #image:hover{
+        height: 200px;
+        width: 180px;
+        transition: 700ms;
+      }
+    </style>
     
     
     
@@ -68,16 +104,30 @@
                       <ul class="u-border-2 u-border-grey-80 u-custom-font u-font-lobster u-h-spacing-40 u-nav u-unstyled u-v-spacing-10 u-nav-3">
                         <li class="u-nav-item">
                           <!-- Display all the type -->
+                           <!-- Display all the type -->
                           <?php
                             require_once("Dbconnect.php");
                             $query = "SELECT type,COUNT(type) AS 'count' FROM anime GROUP BY type";
+                            $type = array();
+                            $count = array();
                             $result = mysqli_query($con,$query);
                             while ($row = mysqli_fetch_array($result)) {
-                            
+                              $type[] = $row['type'];
+                              $count[] = $row['count']; 
+                            }
                             ?>
-                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?=$row['type']?>"><?=$row['type']?> (<?=$row['count']?>)
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[1]?>"><?php echo $type[1]; ?> (<?php echo $count[1]; ?> )
                           </a>
-                        <?php } ?>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[2]?>"><?php echo $type[2]; ?> (<?php echo $count[2]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[3]?>"><?php echo $type[3]; ?> (<?php echo $count[3]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[4]?>"><?php echo $type[4]; ?> (<?php echo $count[4]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[5]?>"><?php echo $type[5]; ?> (<?php echo $count[5]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[6]?>"><?php echo $type[6]; ?> (<?php echo $count[6]; ?> )
+                          </a>
                     </li>
                   </ul>
               </div>
@@ -121,8 +171,87 @@
       <section class="u-black u-clearfix u-lightbox u-section-3" id="sec-f968">
         <div class="u-clearfix u-sheet u-sheet-1">
           <!--CODE HERE!!!-->
+          <center>
+            <h2 class="h2"><span>POPULAR ANIME</span></h2>
+          </center>
+          <div class="carousel"
+           data-flickity='{ "contain": true }' style="background-color: black;">
+           <?php
+            require_once("Dbconnect.php");
+            $query = "SELECT * FROM anime ORDER BY rating AND members DESC LIMIT 15";
+            $result = mysqli_query($con,$query);
+              while ($row = mysqli_fetch_array($result)) {
+              
+            ?>
+           <div class="carousel-cell">
+              <a href="Anime_display.php?anime_id=<?=$row['anime_id']?>"><img src="<?=$row['image']?>" style = "padding: 10px;height: 350px;width: 300px;border-radius: 30px;"><center><h6><?=$row['name']?><br>Type: <?=$row['type']?><br>Episodes: <?=$row['episodes']?> </h6></center></a>
+          </div>
+         <?php } ?>
         </div>
+        <br>
+        <center>
+            <h2 class="h2"></h2>
+          </center>
+        <br><br>
+        <div class="container" style="background-color: grey;margin-bottom: 30px;border-radius: 10px;padding: 10px;">
+        <div class='container-fluid' style="padding: 10px;">
+            <table id="datatable"class="table table-striped table-hover table-bordered" style="width:100%;padding: 10px;background-color: white;border-radius: 15px;">
+              <thead class="thead-dark">
+                 <tr class='text-dark'>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Genre</th>
+                    <th>Type</th>
+                    <th>Episodes</th>
+                    <th>Rating</th>
+                    <th>Members</th>
+                 </tr>
+              </thead>
+              <tbody>
+                  <?php 
+                     require_once "Dbconnect.php";   
+                     $query = "SELECT * FROM anime ORDER BY rating AND members DESC";     
+                     $rs_result = mysqli_query ($con, $query);  
+                      
+              
+                    while ($row = mysqli_fetch_array($rs_result)) {
+                      # code...
+                      
+               ?>
+                 <tr>
+                     <td><a href="Anime_display.php?anime_id=<?=$row['anime_id']?>"><img id="image" src="<?=$row['image']?>" alt = "<?=$row['name']?>"></img></a></td>
+                     <td><a href="Anime_display.php?anime_id=<?=$row['anime_id']?>" style="text-decoration: none;color: black"><p><?=$row['name']?></p></a></td>
+                     <td><p><?=$row['genre']?></p></td>
+                     <td><p><?=$row['type']?></p></td>
+                     <td><p><?=$row['episodes']?></p></td>
+                     <td><p><?=$row['rating']?></p></td>
+                     <td><p><?=$row['members']?></p></td>
+                </tr>
+                 <?php } //end of loop ?>
+              </tbody>
+                <tfoot class="text-black">
+                  <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Genre</th>
+                    <th>Type</th>
+                    <th>Episodes</th>
+                    <th>Rating</th>
+                    <th>Members</th>
+                  </tr>
+                </tfoot>
+            </table>
+             <script type="text/javascript">
+                 $(document).ready(function() {
+                 $('#datatable').DataTable();
+               });
+    </script>
+        </div>
+      </div>
+      </div>
+      <br><br>
       </section>
+
       <!--FOOTER-->
           <section class="u-clearfix u-grey-80 u-section-4" id="sec-242b">
       <div class="u-clearfix u-sheet u-sheet-1">
