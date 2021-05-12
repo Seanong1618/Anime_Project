@@ -77,16 +77,29 @@
                       <ul class="u-border-2 u-border-grey-80 u-custom-font u-font-lobster u-h-spacing-40 u-nav u-unstyled u-v-spacing-10 u-nav-3">
                         <li class="u-nav-item">
                           <!-- Display all the type -->
-                          <?php
+                         <?php
                             require_once("Dbconnect.php");
                             $query = "SELECT type,COUNT(type) AS 'count' FROM anime GROUP BY type";
+                            $type = array();
+                            $count = array();
                             $result = mysqli_query($con,$query);
                             while ($row = mysqli_fetch_array($result)) {
-                            
+                              $type[] = $row['type'];
+                              $count[] = $row['count']; 
+                            }
                             ?>
-                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?=$row['type']?>"><?=$row['type']?> (<?=$row['count']?>)
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[1]?>"><?php echo $type[1]; ?> (<?php echo $count[1]; ?> )
                           </a>
-                        <?php } ?>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[2]?>"><?php echo $type[2]; ?> (<?php echo $count[2]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[3]?>"><?php echo $type[3]; ?> (<?php echo $count[3]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[4]?>"><?php echo $type[4]; ?> (<?php echo $count[4]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[5]?>"><?php echo $type[5]; ?> (<?php echo $count[5]; ?> )
+                          </a>
+                          <a class="u-button-style u-grey-50 u-hover-palette-1-light-1 u-nav-link u-text-hover-grey-10 u-text-white" href="Anime_list_type.php?type=<?php echo $type[6]?>"><?php echo $type[6]; ?> (<?php echo $count[6]; ?> )
+                          </a>
                     </li>
                   </ul>
               </div>
